@@ -1,25 +1,18 @@
 <?php
+$inc_dir = '../../include/';
+require_once $inc_dir.'basic.php';
 require_once("config.php");
 require_once("parser.class.php");
 
-//Check login session
-session_start();
-
-if (!$_SESSION['logged_in'])
-{
-	//check fails
-	header("Location: login.php?status=session");
-	exit();
-}
+$_auth->authenticate();
 ?>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
-	<title>phpdhcpd</title>
-	<script language="JavaScript" type="text/javascript">
+  <meta name="robots" content="NOINDEX,NOFOLLOW">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <title>phpdhcpd</title>
+  <script type="text/javascript">
 		function sortby (to, p) {
 			var myForm = document.createElement("form");
 			myForm.method = "post";
@@ -34,12 +27,11 @@ if (!$_SESSION['logged_in'])
 			myForm.submit() ;
 			document.body.removeChild(myForm);
 		}
-	</script>
+  </script>
 </head>
 <body>
-<center>
-<h2>Current DHCP IP Addresses (Leases)</h2>
-</center>
+
+  <h2>DHCP Deamon IP-Address Leases</h2>
 
 <?php
 //read leases file
@@ -77,24 +69,22 @@ if (file_exists($dhcpd_leases_file) && is_readable($dhcpd_leases_file))
 		?>
 
 		<form action = "index.php"  accept-charset="UTF-8" method="post" id="search-form">
-		<input type="checkbox" name="onlyactiveleases" value="true" 
+		<input type="checkbox" name="onlyactiveleases" value="true"
 		<?php
-		if ($onlyactiveleases)
-			echo "checked='true'";
+		if ($onlyactiveleases){ echo "checked='true'"; }
 		?>
 		/> Only display active leases</br>
 		Search Filter:
-		<input type="text" maxlength="255" name="searchfilter" id="searchfilter" size="20" placeholder="Enter Search" 
+		<input type="text" maxlength="255" name="searchfilter" id="searchfilter" size="20" placeholder="Enter Search"
 		<?php
 			echo " value = '" . $searchfilter . "'>";
 		?>
 		<input type="submit" name="Search" value="Search">
 
 		<?php
-		if ($searchfilter != "")
-			echo "<a href='index.php'>Clear Search</a>\n";
+		if ($searchfilter != ""){ echo "<a href='index.php'>Clear Search</a>\n"; }
 		?>
-		
+
 		</form>
 		<br><br>
 
@@ -185,15 +175,10 @@ else
 	echo "<p class='error'>The DHCP leases file does not exist or does not have sufficient read privileges.</p>";
 }
 
-//display message if the cache file isn't writeable
-if ($cache_vendor_results && !is_writeable("./nmap-mac-prefixes_cache")) {
-	echo "<p class='error'>The nmap-mac-prefixes_cache file doesn't have sufficient write privileges.</p>";
-}
 ?>
 
-<br><hr>
-<center><a href="https://github.com/firefly2442/phpdhcpd/">phpdhcpd</a>
-<br>Version: <?php echo $version;?></center>
+  <div class="phpdhcpd_footer">
+    Powered by <a href="https://github.com/firefly2442/phpdhcpd/">phpdhcpd</a>
+  </div>
 </body>
 </html>
-

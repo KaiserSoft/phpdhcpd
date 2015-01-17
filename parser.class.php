@@ -13,7 +13,7 @@ class ParseClass
 		$line_number = 0;
 		$row_array = array(array());
 		while (!feof($open_file))
-		{	
+		{
 			$read_line = fgets($open_file, 4096);
 			if (substr($read_line, 0, 1) != "#") //check for comment (skip)
 			{
@@ -40,7 +40,7 @@ class ParseClass
 					$time = str_replace(";", "", $time);
 					$row_array[$line_number][2] = $row_array[$line_number][2].$time;
 					$row_array[$line_number][2] = $row_array[$line_number][2]."(".$day.")";
-				}	
+				}
 				else if ($tok == "tstp")
 				{
 					$day = $this->intToDay(strtok(" "));
@@ -56,7 +56,7 @@ class ParseClass
 					$MAC = strtok(" ");
 					$MAC = strtoupper(str_replace(";", "", $MAC));
 					$MAC = strtoupper(str_replace("ethernet - ", "", $MAC));
-				
+
 					$row_array[$line_number][4] = $MAC." (".$this->getmacvendor($MAC).")";
 				}
 				else if ($tok == "uid")
@@ -80,7 +80,7 @@ class ParseClass
 				}
 			}
 		}
-	
+
 		$this->dhcptable = $row_array;
 	}
 
@@ -116,29 +116,29 @@ class ParseClass
 	{
 		for ($i = 0; $i < 7; $i++) {
 			switch ($i) {
-			case 0: 
+			case 0:
 				//IP Address
-				echo "<tr class='row".$css_num."'><td>" . $row[0]. "</td>\n"; 
+				echo "<tr class='row".$css_num."'><td>" . $row[0]. "</td>\n";
 				break;
-			case 1: 
+			case 1:
 				//Start Time
-				echo "<td>".$row[1]. "</td>\n"; 
+				echo "<td>".$row[1]. "</td>\n";
 				break;
-			case 2: 
+			case 2:
 				//End Time
-				echo "<td>".$row[2]. "</td>\n"; 
+				echo "<td>".$row[2]. "</td>\n";
 				break;
-			case 3: 
+			case 3:
 				//Lease Expires
-				echo "<td>".$row[3]."</td>\n"; 
+				echo "<td>".$row[3]."</td>\n";
 				break;
-			case 4: 
+			case 4:
 				//MAC Address
-				echo "<td>".$row[4]."</td>\n"; 
+				echo "<td>".$row[4]."</td>\n";
 				break;
-			case 5: 
+			case 5:
 				//Client Identifier
-				echo "<td>".$row[5]. "</td>\n"; 
+				echo "<td>".$row[5]. "</td>\n";
 				break;
 			case 6:
 				//Hostname
@@ -148,28 +148,28 @@ class ParseClass
 		}
 	}
 
-	private function compare_ip($a, $b) 
+	private function compare_ip($a, $b)
 	{
 		return strnatcmp($a[0], $b[0]);
 	}
 
-	private function compare_start_time($a, $b) 
+	private function compare_start_time($a, $b)
 	{
 		return strnatcmp($a[1], $b[1]);
 	}
 
-	private function compare_end_time($a, $b) 
+	private function compare_end_time($a, $b)
 	{
 		return strnatcmp($a[2], $b[2]);
 	}
 
-	private function compare_lease_expire($a, $b) 
+	private function compare_lease_expire($a, $b)
 	{
 		return strnatcmp($a[3], $b[3]);
 	}
 
 	private function compare_mac($a, $b)
-	{ 
+	{
 		return strnatcmp($a[4], $b[4]);
 	}
 
@@ -192,7 +192,7 @@ class ParseClass
 			//or via http://standards.ieee.org/develop/regauth/oui/oui.txt
 			//Location of the mac vendor list file
 			$mac_vendor_file = "./nmap-mac-prefixes";
-			$mac_vendor_file_cache = "./nmap-mac-prefixes_cache";
+			$mac_vendor_file_cache = "./nmap-mac-prefixes_cache.php";
 
 			$mac = substr(strtoupper(str_replace(array(":"," ","-"), "", $mac_unformated)),0,6);
 
@@ -256,48 +256,48 @@ class ParseClass
 	{
 		$order = 0;
 		switch ($sort_column) {
-			case 1: 
+			case 1:
 				usort($this->dhcptable, array($this, 'compare_ip'));
 				break;
-			case 2: 
+			case 2:
 				usort($this->dhcptable, array($this, 'compare_start_time'));
 				break;
-			case 3: 
-				usort($this->dhcptable, array($this, 'compare_end_time')); 
+			case 3:
+				usort($this->dhcptable, array($this, 'compare_end_time'));
 				break;
-			case 4: 
-				usort($this->dhcptable, array($this, 'compare_lease_expire')); 
+			case 4:
+				usort($this->dhcptable, array($this, 'compare_lease_expire'));
 				break;
-			case 5: 
+			case 5:
 				usort($this->dhcptable, array($this, 'compare_mac'));
 				break;
-			case 6: 
+			case 6:
 				usort($this->dhcptable, array($this, 'compare_uid'));
 				break;
 			case 7:
 				usort($this->dhcptable, array($this, 'compare_hostname'));
 				break;
-			case -1: 
+			case -1:
 				usort($this->dhcptable, array($this, 'compare_ip'));
 				$order=-1;
 				break;
-			case -2: 
+			case -2:
 				usort($this->dhcptable, array($this, 'compare_start_time'));
 				$order=-1;
 				break;
-			case -3: 
-				usort($this->dhcptable, array($this, 'compare_end_time')); 
+			case -3:
+				usort($this->dhcptable, array($this, 'compare_end_time'));
 				$order=-1;
 				break;
-			case -4: 
-				usort($this->dhcptable, array($this, 'compare_lease_expire')); 
+			case -4:
+				usort($this->dhcptable, array($this, 'compare_lease_expire'));
 				$order=-1;
 				break;
-			case -5: 
+			case -5:
 				usort($this->dhcptable, array($this, 'compare_mac'));
 				$order=-1;
 				break;
-			case -6: 
+			case -6:
 				usort($this->dhcptable, array($this, 'compare_uid'));
 				$order=-1;
 				break;
@@ -306,8 +306,8 @@ class ParseClass
 				$order=-1;
 				break;
 		}
-	
-	
+
+
 		$displayed_line_number = 0;
 		if ($order >= 0) {
 			$line = 0;
