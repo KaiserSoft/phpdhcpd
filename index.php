@@ -4,7 +4,11 @@ require_once $inc_dir.'basic.php';
 require_once("config.php");
 require_once("parser.class.php");
 
-$_auth->authenticate();
+$expected = array( 'username' => $settings['WEB_UI_USER'], 'password' => $settings['WEB_UI_PASSWORD']);
+$supplied = (isset($_POST['username']) && isset($_POST['username']) )
+                ?  array( 'username' => $_POST['username'], 'password' => $_POST['password'])
+                : array( 'username' => '', 'password' => '');
+$_auth->authenticate( $expected, $supplied );
 ?>
 <!DOCTYPE html>
 <html>
