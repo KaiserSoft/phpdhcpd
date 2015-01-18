@@ -6,7 +6,7 @@ require_once("parser.class.php");
 
 $expected = array( 'username' => $settings['WEB_UI_USER'], 'password' => $settings['WEB_UI_PASSWORD']);
 $supplied = (isset($_POST['username']) && isset($_POST['username']) )
-                ?  array( 'username' => $_POST['username'], 'password' => $_POST['password'])
+                ? array( 'username' => $_POST['username'], 'password' => $_POST['password'])
                 : array( 'username' => '', 'password' => '');
 $_auth->authenticate( $expected, $supplied );
 ?>
@@ -35,7 +35,11 @@ $_auth->authenticate( $expected, $supplied );
 </head>
 <body>
 
-  <h2>DHCP Deamon IP-Address Leases</h2>
+  <div>
+    <h2>DHCP Daemon IP-Address Leases</h2>
+    <p>This page lists the contents of your lease file.<br>
+      It will not show any hosts with static/fixed IPs, even if they where assigned by the server.</p>
+  </div>
 
 <?php
 //read leases file
